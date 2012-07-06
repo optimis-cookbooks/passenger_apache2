@@ -1,14 +1,16 @@
 #
-# Cookbook Name:: passenger_apache2
+# Cookbook Name:: passenger
 # Recipe:: default
 #
 # Author:: Joshua Timberman (<joshua@opscode.com>)
 # Author:: Joshua Sierles (<joshua@37signals.com>)
 # Author:: Michael Hale (<mikehale@gmail.com>)
+# Author:: Mike Adolphs (<mike@fooforge.com)
 #
 # Copyright:: 2009, Opscode, Inc
 # Copyright:: 2009, 37signals
 # Coprighty:: 2009, Michael Hale
+# Copyright:: 2012, Mike Adolphs
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -45,11 +47,26 @@ else
   end
 end
 
-gem_package "passenger" do
-  version node[:passenger][:version]
-end
+unless node[:passenger][:rbenv][:enabled]
+  gem_package "passenger" do
+    version node[:passenger][:version] if node[:passenger][:version]
+  end
 
-execute "passenger_module" do
-  command 'passenger-install-apache2-module --auto'
-  creates node[:passenger][:module_path]
+  execute "passenger_module" do
+    command 'passenger-install-apache2-module --auto'
+    creates node[:passenger][:module_path]
+  end
+else
+  rbenv_gem "passenger" do
+    rbenv_version node[:passenger][:rbenv][:version]
+    version node[:passenger][:version] if node[:passenger][:version]
+  end
+
+  rbenv_script "passenger_module" do
+    rbenv_version node[:passenger][:rbenv][:version]
+    code <<-EOH
+      passenger-install-apache2-module --auto
+    EOH
+    creates node[:passenger][:rbenv][:module_path]
+  end
 end

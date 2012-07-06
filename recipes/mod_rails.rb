@@ -1,14 +1,16 @@
 #
-# Cookbook Name:: passenger_apache2
+# Cookbook Name:: passenger
 # Recipe:: mod_rails
 #
 # Author:: Joshua Timberman (<joshua@opscode.com>)
 # Author:: Joshua Sierles (<joshua@37signals.com>)
 # Author:: Michael Hale (<mikehale@gmail.com>)
+# Author:: Mike Adolphs (<mike@fooforge.com)
 #
 # Copyright:: 2009, Opscode, Inc
 # Copyright:: 2009, 37signals
 # Coprighty:: 2009, Michael Hale
+# Copyright:: 2012, Mike Adolphs
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,11 +24,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include_recipe "passenger_apache2"
+include_recipe "passenger"
 
 if platform?("ubuntu","debian")
   template "#{node[:apache][:dir]}/mods-available/passenger.load" do
-    cookbook "passenger_apache2"
+    cookbook "passenger"
     source "passenger.load.erb"
     owner "root"
     group "root"
@@ -35,13 +37,19 @@ if platform?("ubuntu","debian")
 end
 
 template "#{node[:apache][:dir]}/mods-available/passenger.conf" do
-  cookbook "passenger_apache2"
+  cookbook "passenger"
   source "passenger.conf.erb"
   owner "root"
   group "root"
   mode "644"
 end
 
-apache_module "passenger" do
-  module_path node[:passenger][:module_path]
+unless node[:passenger][:rbenv][:enabled]
+  apache_module "passenger" do
+    module_path node[:passenger][:module_path]
+  end
+else
+  apache_module "passenger" do
+    module_path node[:passenger][:rbenv][:module_path]
+  end
 end

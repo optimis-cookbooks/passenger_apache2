@@ -1,1 +1,5 @@
-LoadModule passenger_module <%= node[:passenger][:module_path] %>
+<% unless node[:passenger][:rbenv][:enabled] %>
+  LoadModule passenger_module <%= node[:passenger][:module_path] %>
+<% else %>
+  LoadModule passenger_module <%= node[:passenger][:rbenv][:module_path] %>
+<% end %>
