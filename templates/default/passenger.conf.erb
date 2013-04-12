@@ -11,6 +11,6 @@ PassengerRuby <%= node[:passenger][:rbenv][:binary] %>
 
 <% if node[:passenger][:pre_start] %>
   <% node[:passenger][:pre_start][:urls].each do |url| %>
-    PassengerPreStart url
+    PassengerPreStart <%= url %>
   <% end %>
 <% end %>
