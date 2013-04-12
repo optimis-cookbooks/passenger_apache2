@@ -1,1 +1,16 @@
-PassengerMaxPoolSize <%= node[:passenger][:max_pool_size] %>
+PassengerRoot <%= node[:passenger][:rbenv][:root_path] %>
+PassengerRuby <%= node[:passenger][:rbenv][:binary] %>
+
+<% if node[:passenger][:max_pool_size] %>
+  PassengerMaxPoolSize <%= node[:passenger][:max_pool_size] %>
+<% end %>
+
+<% if node[:passenger][:spawn_method] %>
+  PassengerSpawnMethod <%= node[:passenger][:spawn_method] %>
+<% end %>
+
+<% if node[:passenger][:pre_start] %>
+  <% node[:passenger][:pre_start][:urls].each do |url| %>
+    PassengerPreStart url
+  <% end %>
+<% end %>

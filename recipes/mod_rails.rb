@@ -24,32 +24,30 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include_recipe "passenger"
+include_recipe 'passenger'
 
-if platform?("ubuntu","debian")
+if platform?('ubuntu', 'debian')
   template "#{node[:apache][:dir]}/mods-available/passenger.load" do
-    cookbook "passenger"
-    source "passenger.load.erb"
-    owner "root"
-    group "root"
+    source 'passenger.load.erb'
+    owner 'root'
+    group 'root'
     mode 0755
   end
 end
 
 template "#{node[:apache][:dir]}/mods-available/passenger.conf" do
-  cookbook "passenger"
-  source "passenger.conf.erb"
-  owner "root"
-  group "root"
-  mode "644"
+  source 'passenger.conf.erb'
+  owner 'root'
+  group 'root'
+  mode '644'
 end
 
 unless node[:passenger][:rbenv][:enabled]
-  apache_module "passenger" do
+  apache_module 'passenger' do
     module_path node[:passenger][:module_path]
   end
 else
-  apache_module "passenger" do
+  apache_module 'passenger' do
     module_path node[:passenger][:rbenv][:module_path]
   end
 end
