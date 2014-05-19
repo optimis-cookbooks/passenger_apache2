@@ -5,6 +5,10 @@ PassengerRuby <%= node[:passenger][:rbenv][:binary] %>
   PassengerMaxPoolSize <%= node[:passenger][:max_pool_size] %>
 <% end %>
 
+<% if node[:passenger][:min_instances] %>
+  PassengerMinInstances <%= node[:passenger][:min_instances] %>
+<% end %>
+
 <% if node[:passenger][:spawn_method] %>
   PassengerSpawnMethod <%= node[:passenger][:spawn_method] %>
 <% end %>
