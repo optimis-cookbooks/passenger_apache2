@@ -1,4 +1,4 @@
-name 'passenger_apache2'
+name 'old-passenger_apache2'
 
 maintainer        "Mike Adolphs"
 maintainer_email  "mike@fooforge.com"
