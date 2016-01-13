@@ -1,7 +1,7 @@
 PassengerRoot <%= node[:passenger][:rbenv][:root_path] %>
 PassengerRuby <%= node[:passenger][:rbenv][:binary] %>
 
-PassengerFriendlyErrorPages 'off'
+PassengerFriendlyErrorPages off
 
 <% if node[:passenger][:max_pool_size] %>
   PassengerMaxPoolSize <%= node[:passenger][:max_pool_size] %>
